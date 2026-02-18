@@ -40,5 +40,16 @@ class TopicNotifier extends StateNotifier<AsyncValue<List<Topic>>> {
       state = AsyncValue.error(e, st);
     }
   }
+
+  Future<void> deleteTopic(int id) async {
+    final current = state.value ?? [];
+    try {
+      final service = _ref.read(topicServiceProvider);
+      await service.deleteTopic(id);
+      state = AsyncValue.data(current.where((t) => t.id != id).toList());
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
 }
 

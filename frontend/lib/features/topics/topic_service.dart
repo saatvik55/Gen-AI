@@ -22,5 +22,14 @@ class TopicService {
     );
     return Topic.fromJson(response.data as Map<String, dynamic>);
   }
+
+  Future<void> deleteTopic(int id) async {
+    await _dio.delete('/topics/$id');
+  }
+
+  Future<Topic> getTopic(int id) async {
+    final response = await _dio.get('/topics/$id');
+    return Topic.fromJson(response.data as Map<String, dynamic>);
+  }
 }
 

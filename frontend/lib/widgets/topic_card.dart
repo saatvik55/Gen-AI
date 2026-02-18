@@ -4,10 +4,16 @@ import '../features/topics/topic_model.dart';
 import 'strength_bar.dart';
 
 class TopicCard extends StatelessWidget {
-  const TopicCard({super.key, required this.topic, this.onReview});
+  const TopicCard({
+    super.key,
+    required this.topic,
+    this.onReview,
+    this.onDelete,
+  });
 
   final Topic topic;
   final VoidCallback? onReview;
+  final VoidCallback? onDelete;
 
   bool get _isWeak => topic.strengthScore < 0.4;
 
@@ -50,12 +56,24 @@ class TopicCard extends StatelessWidget {
             const SizedBox(height: 8),
             StrengthBar(strengthScore: topic.strengthScore),
             const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: onReview,
-                child: const Text('Review'),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (onDelete != null)
+                  TextButton.icon(
+                    onPressed: onDelete,
+                    icon: const Icon(Icons.delete, size: 18),
+                    label: const Text('Delete'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                  ),
+                const SizedBox(width: 8),
+                TextButton(
+                  onPressed: onReview,
+                  child: const Text('Review'),
+                ),
+              ],
             ),
           ],
         ),
