@@ -1,6 +1,23 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy import Boolean, Column, Integer, String, Float, DateTime
 from datetime import datetime, timezone
 from .database import Base
+
+
+class User(Base):
+    """SQLAlchemy model for users table"""
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String, nullable=True)
+    email = Column(String, unique=True, index=True, nullable=True)
+    phone = Column(String, unique=True, index=True, nullable=True)
+    hashed_password = Column(String, nullable=True)
+    google_id = Column(String, unique=True, index=True, nullable=True)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"<User(id={self.id}, email='{self.email}')>"
 
 
 class Topic(Base):

@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .controllers import topic_controller
+from .controllers.auth_controller import router as auth_router
 from .database import Base, engine
 
 
@@ -20,18 +21,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Enable CORS for frontend
+# Enable CORS — allow all origins in development.
+# Bearer-token auth doesn't need allow_credentials=True,
+# and allow_credentials=True is incompatible with allow_origins=["*"].
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5500",
-        "http://127.0.0.1:5500",
-        "http://localhost:8080",
-        "http://127.0.0.1:8080",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -43,3 +39,4 @@ def health_check() -> dict:
 
 
 app.include_router(topic_controller)
+app.include_router(auth_router)

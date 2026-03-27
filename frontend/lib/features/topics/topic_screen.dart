@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'topic_model.dart';
 import 'topic_provider.dart';
@@ -14,7 +15,11 @@ class TopicScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learning Agent Dashboard'),
+        title: const Text('My Topics'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/home'),
+        ),
       ),
       body: topicsAsync.when(
         data: (topics) {
